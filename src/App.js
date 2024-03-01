@@ -1,9 +1,10 @@
 import "./App.css";
 import Notes from "./components/Notes";
+import Wheat from "./images/bg.jpg";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" style={{}}>
       <Notes />
     </div>
   );

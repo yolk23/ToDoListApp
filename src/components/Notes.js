@@ -22,7 +22,9 @@ const Notes = () => {
   const handleChange = (e) => {
     setNotes(e.target.value);
   };
-
+  const liStyle = {
+    textAlign: "left",
+  };
   const date = new Date();
 
   const year = date.getFullYear();
@@ -44,97 +46,139 @@ const Notes = () => {
   useEffect(() => {}, [completedNotes, activeNotes]);
 
   return (
-    <div
-      style={{
-        border: "solid",
-        fontFamily: "Trebuchet MS",
-        width: "500px",
-        height: "800px",
-        marginLeft: "auto",
-        marginRight: "auto",
-      }}
-    >
-      <form>
-        <div style={{ background: "wheat" }}>
-          <h1
+    <div style={{}}>
+      <div
+        style={{
+          border: "solid",
+          fontFamily: "Trebuchet MS",
+          width: "500px",
+          height: "800px",
+          marginLeft: "auto",
+          marginRight: "auto",
+          backgroundColor: "#D0B49F",
+        }}
+      >
+        <form>
+          <div style={{ background: "wheat" }}>
+            <h1
+              style={{
+                marginTop: "0px",
+                fontFamily: "serif",
+                fontWeight: "normal",
+              }}
+            >
+              TO DO LIST
+            </h1>
+            <h4>Date:{withSlashes}</h4>
+          </div>
+          <input
+            type="text"
+            placeholder="Add New"
+            onChange={handleChange}
+            value={notes}
+            style={{ width: "400px" }}
+          />
+
+          <button onClick={renderNote}>Add</button>
+        </form>
+
+        <div>
+          <div>
+            {view === "active" && (
+              <div>
+                <h1>Active:</h1>
+                <ul>
+                  {activeNotes.map((note, id) => (
+                    <div
+                      key={id}
+                      style={{ display: "flex", listStyleType: "none" }}
+                    >
+                      <input
+                        type="checkbox"
+                        onClick={(e) => handleCheckBox(e, note)}
+                        checked={completedNotes.includes(note)} // Check if the note is in the completedNotes array
+                      />
+                      <li style={liStyle}>{note}</li>
+                    </div>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {view === "completed" && (
+              <div>
+                <h1>Completed:</h1>
+                <ul>
+                  {completedNotes.map((note, id) => (
+                    <div key={id}>
+                      <li
+                        style={{
+                          textDecoration: "line-through",
+                          textAlign: "left",
+                        }}
+                      >
+                        {note}
+                      </li>
+                    </div>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {view === "all" && (
+              <div>
+                <h1>All:</h1>
+                <ul>
+                  {[...completedNotes, ...activeNotes].map((note, id) => (
+                    <div key={id}>
+                      <li style={liStyle}>{note}</li>
+                    </div>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      <footer
+        style={{
+          border: "solid",
+          width: "500px",
+          marginLeft: "auto",
+          marginRight: "auto",
+          backgroundColor: "#BE9685",
+        }}
+      >
+        <div>
+          <button
+            onClick={() => setView("all")}
             style={{
-              marginTop: "0px",
-              fontFamily: "serif",
-              fontWeight: "normal",
+              backgroundColor: "transparent",
+              border: view === "all" ? "solid" : "none",
             }}
           >
-            TO DO LIST
-          </h1>
-          <h4>Date:{withSlashes}</h4>
-        </div>
-        <input
-          type="text"
-          placeholder="Add New"
-          onChange={handleChange}
-          value={notes}
-          style={{ width: "400px" }}
-        />
+            All
+          </button>
+          <button
+            onClick={() => setView("active")}
+            style={{
+              backgroundColor: "transparent",
+              border: view === "active" ? "solid" : "none",
+            }}
+          >
+            Active Notes
+          </button>
+          <button
+            onClick={() => setView("completed")}
+            style={{
+              backgroundColor: "transparent",
+              border: view === "completed" ? "solid" : "none",
+            }}
+          >
+            Completed Notes
+          </button>
 
-        <button onClick={renderNote}>Add</button>
-      </form>
-      <div>
-        <ul>
-          {activeNotes.map((note, id) => (
-            <div key={id}>
-              <input
-                type="checkbox"
-                onClick={(e) => handleCheckBox(e, note)}
-                checked={completedNotes.includes(note)} // Check if the note is in the completedNotes array
-              />
-              <li>{note}</li>
-            </div>
-          ))}
-        </ul>
-      </div>
-
-      <div>Active to-do: {activeNotes.length}</div>
-      <div>
-        <button onClick={() => setView("all")}>All</button>
-        <button onClick={() => setView("active")}>Active Notes</button>
-        <button onClick={() => setView("completed")}>Completed Notes</button>
-      </div>
-      <div>
-        <div>
-          {view === "active" && (
-            <div>
-              <ul>
-                {activeNotes.map((note, id) => (
-                  <div key={id}>
-                    <li>{note}</li>
-                  </div>
-                ))}
-              </ul>
-            </div>
-          )}
-          {view === "completed" && (
-            <div>
-              <ul>
-                {completedNotes.map((note, id) => (
-                  <div key={id}>
-                    <li style={{ textDecoration: "line-through" }}>{note}</li>
-                  </div>
-                ))}
-              </ul>
-            </div>
-          )}
-          {view === "all" && (
-            <div>
-              <ul>
-                {[...completedNotes, ...activeNotes].map((note, id) => (
-                  <div key={id}>
-                    <li>{note}</li>
-                  </div>
-                ))}
-              </ul>
-            </div>
-          )}
+          <div>Active to-do: {activeNotes.length}</div>
         </div>
-      </div>
+      </footer>
     </div>
   );
 };
